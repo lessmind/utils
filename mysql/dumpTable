@@ -1,0 +1,12 @@
+#!/bin/bash
+HOST=""
+USER=""
+PASS=""
+DB=""
+TABLES=(
+)
+
+for table in ${TABLES[@]}; do
+	echo "......dumping ${table}" 1>&2
+	mysqldump  --compact --add-drop-table -h${HOST} -u${USER} -p${PASS} ${DB} ${table}
+done

@@ -1,0 +1,4 @@
+#!/bin/bash
+for file in $(git diff ${1} ${2} | grep 'diff --git' | awk '{print $3}' | sed 's/a\///'); do
+	dirname ${file}
+done
