@@ -1,0 +1,9 @@
+#!/bin/bash
+COMMIT1=${1}
+COMMIT2=${2}
+OUTPUT_FILE=${3}
+if [ $# -lt 3 ]; then
+	echo "Usage: ${0} commmit1 commit2 output_file"
+	exit
+fi
+git diff -z --name-only ${COMMIT1} ${COMMIT2} | xargs -0 git archive HEAD -o ${OUTPUT_FILE} --
