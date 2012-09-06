@@ -1,16 +1,45 @@
 #!/bin/bash
-COMMIT1=${2}
-COMMIT2=${3}
-OUTPUT_FILE=${1}
-if [ $# -lt 2 ]; then
-	echo "Usage: ${0} output_file commmit1 [commit2]"
+COMMIT='HEAD^'
+HEAD='HEAD'
+OUTPUT_FILE='output'
+VAR_NAME='tmp'
+_printHelp() {
+	echo "Usage: ${0} [ -c|--commit HEAD^ -o|--output output -h|--head HEAD ]"
 	exit
+}
+if [ $# -lt 2 ]; then
+	_printHelp
 fi
+for arg in $@; do
+	case ${arg} in
+		help)
+			_printHelp
+		;;
+		-c)
+			VAR_NAME='COMMIT'
+		;;
+		--commit)
+			VAR_NAME='COMMIT'
+		;;
+		-o)
+			VAR_NAME='OUTPUT_FILE'
+		;;
+		--output)
+			VAR_NAME='OUTPUT_FILE'
+		;;
+		-h)
+			VAR_NAME='HEAD'
+		;;
+		--head)
+			VAR_NAME='HEAD'
+		;;
+		**)
+			eval ${VAR_NAME}=${arg}
+		;;
+	esac
+done
 if [ ! -d '.git' ]; then
 	echo "You should execute this script in the root directory"
 	exit
 fi
-if [ $# -lt 3 ]; then
-	COMMIT2='HEAD'
-fi
-git diff -z --name-only ${COMMIT1} ${COMMIT2} | xargs -0 git archive ${COMMIT2} -o ${OUTPUT_FILE} --
+git diff -z --name-only ${COMMIT} ${HEAD} | xargs -0 git archive ${HEAD} -o ${OUTPUT_FILE} --
