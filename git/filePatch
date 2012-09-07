@@ -48,5 +48,5 @@ for arg in $@; do
 	esac
 done
 echo "Creating archive ${OUTPUT_FILE} $(git log --pretty=format:"%h" -1 ${COMMIT})..$(git log --pretty=format:"%h" -1 ${HEAD})"
-#git diff -z --name-only ${COMMIT} ${HEAD} | xargs -0 git archive ${HEAD} -o ${OUTPUT_FILE}_c$(git log --pretty=format:"%h" -1 ${HEAD}) --
+git diff -z --name-only ${COMMIT} ${HEAD} | xargs -0 git archive ${HEAD} -o ${OUTPUT_FILE} --
 echo "Finish archive"
