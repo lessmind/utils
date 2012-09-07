@@ -42,4 +42,4 @@ if [ ! -d '.git' ]; then
 	echo "You should execute this script in the root directory"
 	exit
 fi
-git diff -z --name-only ${COMMIT} ${HEAD} | xargs -0 git archive ${HEAD} -o ${OUTPUT_FILE} --
+git diff -z --name-only ${COMMIT} ${HEAD} | xargs -0 git archive ${HEAD} -o ${OUTPUT_FILE}_c$(git log --pretty=format:"%h" -1 ${HEAD}) --
