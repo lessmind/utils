@@ -1,7 +1,7 @@
 #!/bin/bash
 COMMIT='HEAD^'
 HEAD='HEAD'
-OUTPUT_FILE='output'
+OUTPUT_FILE=$(basename $(pwd))
 VAR_NAME='tmp'
 _printHelp() {
 	echo "Usage: ${0} [ -c|--commit HEAD^ -o|--output output -h|--head HEAD ]"
