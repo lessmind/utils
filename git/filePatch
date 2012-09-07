@@ -8,7 +8,12 @@ _printHelp() {
 	exit
 }
 if [ $# -lt 2 ]; then
+	echo "Too few arguments"
 	_printHelp
+fi
+if [ ! -d '.git' ]; then
+	echo "You should execute this script in the root directory"
+	exit
 fi
 for arg in $@; do
 	case ${arg} in
@@ -34,12 +39,14 @@ for arg in $@; do
 			VAR_NAME='HEAD'
 		;;
 		**)
+			if [ ${VAR_NAME} == 'OUTPUT_FILE' -a -d ${arg} ]; then
+				arg="${arg}/${OUTPUT_FILE}"
+				echo "The output target is an directory, using ${arg} as filename"
+			fi
 			eval ${VAR_NAME}=${arg}
 		;;
 	esac
 done
-if [ ! -d '.git' ]; then
-	echo "You should execute this script in the root directory"
-	exit
-fi
-git diff -z --name-only ${COMMIT} ${HEAD} | xargs -0 git archive ${HEAD} -o ${OUTPUT_FILE}_c$(git log --pretty=format:"%h" -1 ${HEAD}) --
+echo "Creating archive ${OUTPUT_FILE} $(git log --pretty=format:"%h" -1 ${COMMIT})..$(git log --pretty=format:"%h" -1 ${HEAD})"
+#git diff -z --name-only ${COMMIT} ${HEAD} | xargs -0 git archive ${HEAD} -o ${OUTPUT_FILE}_c$(git log --pretty=format:"%h" -1 ${HEAD}) --
+echo "Finish archive"
