@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#### add in vimrc
+#autocmd FileType markdown :autocmd BufWritePost,BufLeave,WinLeave <buffer> silent !path/to/generate %
+DIR="$( cd $(dirname "${0}") && pwd )"
+CSS=${DIR}/github.css
+_genMd() {
+	echo '
+	<!doctype html>
+	<head>
+		<meta charset="utf - 8">
+		<title>Markdown auto html generator</title>
+		<style type="text/css">
+	'
+	echo "
+	$(cat ${CSS})
+		</style>
+	</head>
+	<body>
+	$(markdown ${1})
+	</body>
+	</html>
+	"
+}
+_genMd ${1} > $(basename ${1} | awk -F . '{print $1}').html
